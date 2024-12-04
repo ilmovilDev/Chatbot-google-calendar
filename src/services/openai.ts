@@ -1,37 +1,35 @@
 import { ChatCompletionMessageParam } from "openai/resources";
 import { OpenAIClient } from "~/config/openai.config";
 
-type ChatHistory = ChatCompletionMessageParam[];
+type Chat = {
+    name: string;
+    history: ChatCompletionMessageParam[];
+}
 
 type ChatConfig = {
     temperature: number;
-    maxTokens: number; // Cambio de estilo a camelCase
-    topP: number; // Cambio de estilo a camelCase
-    frequencyPenalty: number; // Cambio de estilo a camelCase
-    presencePenalty: number; // Cambio de estilo a camelCase
+    max_tokens: number;
+    top_p: number;
+    frequency_penalty: number;
+    presence_penalty: number;
 };
 
 export class OpenAIChat {
     
     private defaultChatConfig: ChatConfig = {
         temperature: 1,
-        maxTokens: 800,
-        topP: 1,
-        frequencyPenalty: 0,
-        presencePenalty: 0,
+        max_tokens: 800,
+        top_p: 1,
+        frequency_penalty: 0,
+        presence_penalty: 0,
     };
 
     constructor(
         private client = OpenAIClient.getInstance()
     ) {}
 
-    /**
-     * Ejecuta el modelo de chat con el historial dado.
-     * @param history Historial de mensajes
-     * @returns Respuesta del modelo o un mensaje de error.
-     */
-    async run(history: ChatHistory): Promise<string> {
-        const systemPrompt = this.getSystemPrompt();
+    async chat({name, history}: Chat): Promise<string> {
+        const systemPrompt = this.getSystemPrompt(name);
 
         try {
             const completion = await this.client.chat.completions.create({
@@ -50,11 +48,8 @@ export class OpenAIChat {
         }
     }
 
-    /**
-     * Genera el prompt del sistema utilizado para guiar las interacciones del chatbot.
-     * @returns Prompt del sistema.
-     */
-    private getSystemPrompt(): string {
+    private getSystemPrompt(name: string): string {
         return "Eres un chatbot para atender a los clientes de la inmobiliaria 'Imobiliária Casa & Vida S.A.";
     }
+    
 }
