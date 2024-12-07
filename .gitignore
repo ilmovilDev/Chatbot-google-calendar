@@ -2,8 +2,6 @@ dist/*
 node_modules
 .env
 
-src/config/google_key.json
-
 *_sessions
 *tokens
 .wwebjs*
