@@ -1,18 +1,6 @@
 import { ChatCompletionMessageParam } from "openai/resources";
 import { OpenAIClient } from "~/config/openai.config";
-
-type Chat = {
-    name: string;
-    history: ChatCompletionMessageParam[];
-}
-
-type ChatConfig = {
-    temperature: number;
-    max_tokens: number;
-    top_p: number;
-    frequency_penalty: number;
-    presence_penalty: number;
-};
+import { Chat, ChatConfig } from "~/types";
 
 export class OpenAIChat {
     
@@ -28,15 +16,14 @@ export class OpenAIChat {
         private client = OpenAIClient.getInstance()
     ) {}
 
-    async chat({name, history}: Chat): Promise<string> {
-        const systemPrompt = this.getSystemPrompt(name);
-
+    async chat({prompt, messages}: Chat): Promise<string> {
+        // const systemPrompt = this.getSystemPrompt(name);
         try {
             const completion = await this.client.chat.completions.create({
                 model: "gpt-3.5-turbo",
                 messages: [
-                    { role: "system", content: systemPrompt },
-                    ...history,
+                    { role: "system", content: prompt },
+                    ...messages,
                 ],
                 ...this.defaultChatConfig,
             });

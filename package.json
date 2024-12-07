@@ -16,9 +16,11 @@
     "@builderbot/provider-baileys": "1.2.2",
     "dotenv": "^16.4.7",
     "googleapis": "^144.0.0",
+    "luxon": "^3.5.0",
     "openai": "^4.75.0"
   },
   "devDependencies": {
+    "@types/luxon": "^3.4.2",
     "@types/node": "^20.11.30",
     "@typescript-eslint/eslint-plugin": "^7.2.0",
     "@typescript-eslint/parser": "^7.4.0",
